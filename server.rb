@@ -1,16 +1,20 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require 'logger'
 require 'socket'
+
+logger = Logger.new('/proc/1/fd/1')
+
 port = 3000
 
 server = TCPServer.new(port)
 
-puts "Server started on port #{port} at #{Time.now}"
+logger.info "Server started on port #{port} at #{Time.now}"
 
 while (session = server.accept)
   request = session.gets
-  puts "#{Time.now} - #{request}"
+  logger.info "#{Time.now} - #{request}"
 
   session.puts 'HTTP/1.1 200'
   session.puts 'Content-Type: text/plain'

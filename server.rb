@@ -24,7 +24,7 @@ while (session = server.accept)
 
   session.puts "\n\rENVIRONMENT VARIABLES:"
   ENV.each do |env, value|
-    session.puts "#{env} -> #{value}"
+    session.puts "#{env}=#{value}"
   end
 
   session.puts "\n\rREQUEST PARAMETERS:"

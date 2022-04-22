@@ -4,7 +4,8 @@
 require 'logger'
 require 'socket'
 
-logger = Logger.new('/proc/1/fd/1')
+log_device = File.exists?('/proc/1/fd/1') ? '/proc/1/fd/1' : STDOUT
+logger = Logger.new(log_device)
 
 port = 3000
 
@@ -21,9 +22,14 @@ while (session = server.accept)
   session.puts
   session.puts "Hello world! The time is #{Time.now}"
 
-  session.puts 'Environment Variables:'
+  session.puts "\n\rENVIRONMENT VARIABLES:"
   ENV.each do |env, value|
     session.puts "#{env} -> #{value}"
+  end
+
+  session.puts "\n\rREQUEST PARAMETERS:"
+  /^[A-Z]+ \/.*\?(.*?) HTTP.*$/.match(request)&.captures&.[](0)&.split('&')&.each do |param_pair|
+    session.puts "#{param_pair}"
   end
 
   session.close

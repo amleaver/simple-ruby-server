@@ -1,4 +1,4 @@
-FROM ruby:2.7.3-alpine
+FROM ruby:2.7.6-alpine
 
 # Bundle app source
 COPY . .
